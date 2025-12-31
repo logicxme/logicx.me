@@ -1,1 +1,13 @@
-[]
+[
+    {
+        "type": "course",
+        "typeLabel": "Course",
+        "className": "1 BAC S.EX",
+        "title": "Etude analytique du produit scalaire",
+        "date": "31 DEC 2025",
+        "fileName": "Etude_Analytique_du_Produit_Scalaire.pdf",
+        "url": "https://raw.githubusercontent.com/logicxme/logicx.me/refs/heads/main/files/Cours_Etude_Analytique_du_Produit_Scalaire.pdf",
+        "fileSize": "2.9 MB",
+        "icon": "fa-file-pdf"
+    }
+]
