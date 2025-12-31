@@ -1,5 +1,16 @@
 [
     {
+        "type": "results",
+        "typeLabel": "Exam Results",
+        "className": "1BAC SEF",
+        "title": "Résultats: Devoir Surveillé 1",
+        "date": "31 DEC 2025",
+        "fileName": "ds_1_1bac_s-ex.pdf",
+        "url": "https://raw.githubusercontent.com/logicxme/logicx.me/refs/heads/main/files/ds_1_1bac_s-ex.pdf",
+        "fileSize": "1.0 MB",
+        "icon": "fa-file-pdf"
+    },
+    {
         "type": "homework",
         "typeLabel": "Homework",
         "className": "TCSF",
