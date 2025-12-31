@@ -147,13 +147,6 @@
                         </pre>
                     </div>
                 </div>
-                
-                <div class="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-100 flex gap-3">
-                    <i class="fa-solid fa-circle-info text-blue-500 mt-0.5"></i>
-                    <p class="text-sm text-blue-700">
-                        Copy this code and replace the content of <strong>records.json</strong> to update the database.
-                    </p>
-                </div>
             </div>
         </div>
     </main>
@@ -184,7 +177,7 @@
 
         function loadExistingData() {
             output.textContent = "// Loading existing data...";
-            axios.get('/records.json')
+            axios.get('https://raw.githubusercontent.com/logicxme/logicx.me/refs/heads/main/records.json')
                 .then(response => {
                     currentData = response.data;
                     output.textContent = JSON.stringify(currentData, null, 4);

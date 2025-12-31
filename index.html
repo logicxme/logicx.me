@@ -226,7 +226,7 @@
                 );
 
                 const fetchPromise = axios
-                    .get("/records.json")
+                    .get("https://raw.githubusercontent.com/logicxme/logicx.me/refs/heads/main/records.json")
                     .then((response) => response.data)
                     .catch((error) => {
                         console.error(
