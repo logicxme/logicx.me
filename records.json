@@ -1,7 +1,7 @@
 [
     {
         "type": "results",
-        "typeLabel": "Exam Results",
+        "typeLabel": "Résultats",
         "className": "1BAC SEF",
         "title": "Résultats: Devoir Surveillé 1",
         "date": "31 DEC 2025",
@@ -12,7 +12,7 @@
     },
     {
         "type": "homework",
-        "typeLabel": "Homework",
+        "typeLabel": "Devoirs",
         "className": "TCSF",
         "title": "Devoir à domicile N°2",
         "date": "31 DEC 2025",
@@ -23,8 +23,8 @@
     },
     {
         "type": "course",
-        "typeLabel": "Course",
-        "className": "1 BAC S.EX",
+        "typeLabel": "Cours",
+        "className": "1 BAC SEF",
         "title": "Etude analytique du produit scalaire",
         "date": "31 DEC 2025",
         "fileName": "Etude_Analytique_du_Produit_Scalaire.pdf",
