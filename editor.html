@@ -9,7 +9,6 @@
     
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     
-    <!-- Updated Font: Plus Jakarta Sans -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -27,7 +26,6 @@
                             dark: '#0f172a',
                             blue: '#2563eb',
                         },
-                        // Consistent Professional Palette
                         cat: {
                             results: '#4f46e5', // Indigo 600
                             homework: '#e11d48', // Rose 600
@@ -56,7 +54,6 @@
         
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             
-            <!-- Left Column: Form -->
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 h-fit">
                 <h2 class="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
                     <div class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-brand-blue">
@@ -143,9 +140,7 @@
                 </form>
             </div>
 
-            <!-- Right Column: Status & Download -->
             <div class="flex flex-col gap-6">
-                <!-- Status Card -->
                 <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 flex flex-col items-center justify-center text-center h-full min-h-[300px]">
                     
                     <div id="statusIcon" class="w-20 h-20 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mb-6 transition-all duration-500">
@@ -193,7 +188,6 @@
             countBadge.textContent = count;
             
             if (added) {
-                // Success State
                 statusIcon.className = "w-20 h-20 rounded-full bg-green-100 text-green-600 flex items-center justify-center mb-6 transition-all duration-500 transform scale-110";
                 statusIcon.innerHTML = '<i class="fa-solid fa-check text-3xl"></i>';
                 
@@ -202,7 +196,6 @@
                 
                 statusText.innerHTML = `La liste contient maintenant <span class="font-mono font-bold text-green-800 bg-green-100 px-2 py-0.5 rounded">${count}</span> annonces. N'oubliez pas de télécharger le fichier.`;
 
-                // Reset visual flare after a few seconds, but keep count
                 setTimeout(() => {
                     statusIcon.className = "w-20 h-20 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mb-6 transition-all duration-500";
                     statusIcon.innerHTML = '<i class="fa-solid fa-database text-3xl"></i>';
@@ -248,7 +241,6 @@
             const fileSize = document.getElementById('fileSize').value;
             const inputUrl = document.getElementById('url').value;
             
-            // Ensure URL format
             const url = inputUrl.startsWith('http') ? inputUrl : 'https://raw.githubusercontent.com/logicxme/logicx.me/refs/heads/main/' + inputUrl;
 
             const config = typeConfig[type];
@@ -265,13 +257,10 @@
                 icon: config.icon
             };
 
-            // Add to beginning
             currentData.unshift(newItem);
             
-            // Update UI
             updateStatusUI(currentData.length, true);
             
-            // Optional: Reset form fields but keep some context like class/date
             document.getElementById('title').value = '';
             document.getElementById('fileName').value = '';
             document.getElementById('url').value = '';
@@ -288,4 +277,5 @@
         };
     </script>
 </body>
+
 </html>
