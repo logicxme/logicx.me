@@ -9,7 +9,6 @@
     
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     
-    <!-- Updated Font: Plus Jakarta Sans -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -36,7 +35,6 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        // Updated font family
                         sans: ['"Plus Jakarta Sans"', 'sans-serif'],
                         mono: ['JetBrains Mono', 'monospace'],
                     },
@@ -57,11 +55,10 @@
                             blue: '#2563eb',
                             dark: '#0f172a',
                         },
-                        // NEW Professional Palette: Indigo / Rose / Teal
                         cat: {
-                            results: '#4f46e5', // Indigo 600
-                            homework: '#e11d48', // Rose 600
-                            course: '#0d9488',   // Teal 600
+                            results: '#4f46e5',
+                            homework: '#e11d48',
+                            course: '#0d9488',
                         }
                     }
                 }
@@ -86,19 +83,15 @@
         </div>
     </nav>
 
-    <!-- Professional Image Jumbotron (Full Width) -->
     <div class="relative w-full h-[450px] bg-slate-900 overflow-hidden group border-b border-slate-900">
-        <!-- Math Background Image -->
         <img 
             src="https://images.unsplash.com/photo-1620207418302-439b387441b0?q=80&w=2070&auto=format&fit=crop" 
             alt="Mathematics Background" 
             class="absolute inset-0 w-full h-full object-cover opacity-90 transition-transform duration-1000 group-hover:scale-105"
         >
         
-        <!-- Gradient Overlay for Text Readability -->
         <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/50 to-transparent"></div>
 
-        <!-- Content Container (Centered) -->
         <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-end pb-12 sm:pb-16">
             <div class="max-w-3xl animate-fade-up">
                 
@@ -159,14 +152,13 @@
             data.forEach((item, index) => {
                 const config = styleConfig[item.type] || { colorClass: 'brand-blue' };
                 
-                const card = document.createElement('article');
-                // Updated Card Style: Cleaner, Professional, Subtle Shadows
-                card.className = `group bg-white rounded-2xl border border-slate-200 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300 flex flex-col overflow-hidden animate-fade-up`;
+                const card = document.createElement('a');
+                card.href = item.url;
+                card.className = `group bg-white rounded-2xl border border-slate-200 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300 flex flex-col overflow-hidden animate-fade-up cursor-pointer`;
                 card.style.animationDelay = `${index * 100}ms`;
 
                 card.innerHTML = `
                     <div class="p-6 flex flex-col h-full">
-                        <!-- Header: Badge & Date -->
                         <div class="flex items-center justify-between mb-4">
                             <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide bg-${config.colorClass}/10 text-${config.colorClass}">
                                 ${item.typeLabel}
@@ -176,7 +168,6 @@
                             </span>
                         </div>
 
-                        <!-- Content -->
                         <div class="mb-6">
                             <h3 class="text-xl font-bold text-slate-900 mb-2 leading-tight group-hover:text-${config.colorClass} transition-colors duration-200">
                                 ${item.title}
@@ -187,24 +178,23 @@
                             </div>
                         </div>
 
-                        <!-- Footer Action Area -->
                         <div class="mt-auto pt-5 border-t border-slate-100">
-                            <a href="${item.url}" class="group/file flex items-center gap-4 w-full p-2 -ml-2 rounded-xl hover:bg-slate-50 transition-colors duration-200">
-                                <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-${config.colorClass}/5 text-${config.colorClass} flex items-center justify-center border border-${config.colorClass}/10 transition-all duration-300 group-hover/file:bg-${config.colorClass} group-hover/file:text-white group-hover/file:border-transparent shadow-sm">
+                            <div class="flex items-center gap-4 w-full p-2 -ml-2 rounded-xl group-hover:bg-slate-50 transition-colors duration-200">
+                                <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-${config.colorClass}/5 text-${config.colorClass} flex items-center justify-center border border-${config.colorClass}/10 transition-all duration-300 group-hover:bg-${config.colorClass} group-hover:text-white group-hover:border-transparent shadow-sm">
                                     <i class="fa-solid ${item.icon} text-sm"></i>
                                 </div>
                                 <div class="flex-1 min-w-0">
-                                    <p class="text-sm font-semibold text-slate-700 truncate group-hover/file:text-slate-900 transition-colors">
+                                    <p class="text-sm font-semibold text-slate-700 truncate group-hover:text-slate-900 transition-colors">
                                         ${item.fileName}
                                     </p>
                                     <p class="text-[11px] text-slate-400 font-mono mt-0.5">
                                         ${item.fileSize} • PDF
                                     </p>
                                 </div>
-                                <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full text-slate-300 group-hover/file:text-${config.colorClass} group-hover/file:bg-${config.colorClass}/10 transition-all">
+                                <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full text-slate-300 group-hover:text-${config.colorClass} group-hover:bg-${config.colorClass}/10 transition-all">
                                     <i class="fa-solid fa-arrow-right text-sm"></i>
                                 </div>
-                            </a>
+                            </div>
                         </div>
                     </div>
                 `;
