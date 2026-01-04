@@ -1,5 +1,16 @@
 [
     {
+        "type": "homework",
+        "typeLabel": "Devoirs",
+        "className": "1BAC SEF",
+        "title": "Devoir à domicile N°2 - 1BAC SEF",
+        "date": "4 JAN 2026",
+        "fileName": "DM2_1BACSEF.pdf",
+        "url": "https://raw.githubusercontent.com/logicxme/logicx.me/refs/heads/main/files/DM2_1BACSEF.pdf",
+        "fileSize": "0.5 MB",
+        "icon": "fa-file-lines"
+    },
+    {
         "type": "results",
         "typeLabel": "Résultats",
         "className": "1BAC SEF",
