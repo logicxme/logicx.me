@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Results Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {"50":"#eff6ff","100":"#dbeafe","200":"#bfdbfe","300":"#93c5fd","400":"#60a5fa","500":"#3b82f6","600":"#2563eb","700":"#1d4ed8","800":"#1e40af","900":"#1e3a8a","950":"#172554"}
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans antialiased">
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Header Section -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900 flex items-center gap-3">
+                    <span class="bg-blue-100 text-blue-600 p-2 rounded-lg">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path></svg>
+                    </span>
+                    Student Results Manager
+                </h1>
+                <p class="mt-1 text-gray-500 text-sm">Manage results across multiple classes</p>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                <button onclick="exportAllData()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 flex items-center justify-center gap-2 transition-transform active:scale-95 shadow-lg shadow-blue-500/30">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    Export All Classes
+                </button>
+            </div>
+        </div>
+
+        <!-- Controls Section -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-6">
+            
+            <!-- Class Selector -->
+            <div class="md:col-span-3">
+                <label for="classSelect" class="block mb-2 text-sm font-medium text-gray-900">Select Class</label>
+                <select id="classSelect" onchange="handleClassChange()" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 shadow-sm">
+                    <option value="1bacsef5">1BAC SEF 5</option>
+                    <option value="tcsf9">TCSF 9</option>
+                    <option value="tcsf10">TCSF 10</option>
+                </select>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="md:col-span-6">
+                <label for="searchInput" class="block mb-2 text-sm font-medium text-gray-900">Search Students</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                        </svg>
+                    </div>
+                    <input type="text" id="searchInput" onkeyup="renderTable()" class="block w-full p-2.5 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 shadow-sm" placeholder="Search by name or ID..." required>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="md:col-span-3">
+                 <label class="block mb-2 text-sm font-medium text-gray-900">Class Size</label>
+                <div class="flex items-center justify-between p-2.5 bg-white border border-gray-300 rounded-lg shadow-sm">
+                    <span class="text-sm text-gray-500 flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        Students
+                    </span>
+                    <span id="studentCount" class="text-lg font-bold text-gray-900">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification Toast -->
+        <div id="toast-success" class="fixed bottom-5 right-5 flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 transition-opacity duration-300 opacity-0" role="alert">
+            <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
+                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+                </svg>
+                <span class="sr-only">Check icon</span>
+            </div>
+            <div class="ms-3 text-sm font-normal">Data saved successfully.</div>
+        </div>
+
+        <!-- Table -->
+        <div class="relative overflow-hidden bg-white shadow-md sm:rounded-lg border border-gray-200">
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 border-b">
+                        <tr>
+                            <th scope="col" class="px-6 py-4 font-bold text-gray-900">Student ID</th>
+                            <th scope="col" class="px-6 py-4 font-bold text-gray-900">DOB</th>
+                            <th scope="col" class="px-6 py-4 font-bold text-gray-900">Full Name</th>
+                            <th scope="col" class="px-6 py-4 font-bold text-gray-900 w-48">Result (/20)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody" class="divide-y divide-gray-100">
+                        <!-- Rows will be populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+            <!-- Empty State -->
+            <div id="emptyState" class="hidden flex-col items-center justify-center py-12 text-center">
+                <svg class="w-16 h-16 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <p class="text-gray-500 text-lg">No students found matching your search.</p>
+            </div>
+        </div>
+        
+        <div class="mt-4 text-xs text-gray-400 text-right flex justify-between">
+            <span>* Data is stored locally on your device</span>
+            <span id="lastSavedTime">Last saved: Never</span>
+        </div>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    <script>
+        // --- DATA DEFINITION ---
+        const SCHOOL_DATA = {
+            "1bacsef5": [
+                { "name": "AIT LAFKI FATIMA ZOHRA", "dob": "03/11/2008", "id": "D149131116" },
+                { "name": "CHAHIN Ibrahim", "dob": "16/03/2009", "id": "F176193476" },
+                { "name": "SOUKRI KAMILYA", "dob": "24/03/2009", "id": "F183081825" },
+                { "name": "ELHAMDANY KHADIJA", "dob": "10/04/2009", "id": "G151065239" },
+                { "name": "BOUAZZI AYOUB", "dob": "27/10/2007", "id": "H130264278" },
+                { "name": "BELLAOUALI NOUREDDINE", "dob": "20/02/2008", "id": "J138255912" },
+                { "name": "SAHNOUN ABDELGHANI", "dob": "23/06/2007", "id": "K140076859" },
+                { "name": "BOUKHDIMI IKRAME", "dob": "20/03/2007", "id": "M130045618" },
+                { "name": "MHAMADI GHIZLANE", "dob": "08/04/2007", "id": "R130827597" },
+                { "name": "MODAKIR ABDNOUR", "dob": "29/09/2005", "id": "R136914523" },
+                { "name": "EL MEGHARI OUSSAMA", "dob": "02/02/2008", "id": "R140102522" },
+                { "name": "BENABDOU SAMIRA", "dob": "04/01/2008", "id": "R141166313" },
+                { "name": "ELARJOUN MOHAMED Amine", "dob": "26/03/2009", "id": "R142177116" },
+                { "name": "el kabri meriem", "dob": "01/07/2008", "id": "R143142539" },
+                { "name": "EL MADI MEHDI", "dob": "15/07/2008", "id": "R145178330" },
+                { "name": "FOKRANI AYA", "dob": "13/07/2009", "id": "R150031696" },
+                { "name": "BOU TAGHI RAYANE", "dob": "27/02/2010", "id": "R151014725" },
+                { "name": "RYANY WIJDANE", "dob": "19/12/2009", "id": "R152010032" },
+                { "name": "TALEBI AYA", "dob": "12/08/2009", "id": "R152022070" },
+                { "name": "Ikbal Aya", "dob": "25/10/2009", "id": "R152037720" },
+                { "name": "EL HAIMER HAFSA", "dob": "22/03/2010", "id": "R152066446" },
+                { "name": "SEKRI ABDELBARI", "dob": "21/03/2010", "id": "R153031466" },
+                { "name": "RHAYATE SAAD", "dob": "30/06/2009", "id": "R153033997" },
+                { "name": "CHAOUNI AYOUB", "dob": "20/02/2010", "id": "R153055128" },
+                { "name": "NASSIRI NOUAMANE", "dob": "02/01/2010", "id": "R153074675" },
+                { "name": "ZAABOULI MOHAMED REDA", "dob": "02/12/2009", "id": "R154032307" },
+                { "name": "YAZID ASSIA", "dob": "13/07/2009", "id": "R155026599" },
+                { "name": "EDDYRANY HIBA", "dob": "09/11/2009", "id": "R155056226" },
+                { "name": "HANI Inaam", "dob": "04/07/2009", "id": "R155058601" },
+                { "name": "TIHAMY ABDELLATIF", "dob": "24/07/2009", "id": "R155060799" },
+                { "name": "HOUMID MARWA", "dob": "20/03/2010", "id": "R156019946" },
+                { "name": "AIT OUIAZZANE OUSSAMA", "dob": "14/03/2010", "id": "R156026603" },
+                { "name": "AITELMOUDEN AYMEN", "dob": "23/04/2009", "id": "R156056252" },
+                { "name": "OUKHAYI SALMA", "dob": "08/09/2009", "id": "R157021191" },
+                { "name": "BOUROUS LOUBNA", "dob": "10/07/2009", "id": "R157021193" },
+                { "name": "ZOURAR NADA", "dob": "31/03/2010", "id": "R157021197" },
+                { "name": "ZAGHLOUL SALMA", "dob": "22/11/2009", "id": "R157024129" },
+                { "name": "Aoulad Abdelmoula Walid", "dob": "10/07/2009", "id": "R157049952" },
+                { "name": "RHAZI NOUREDDINE", "dob": "09/12/2009", "id": "R157056267" },
+                { "name": "ELMOKIT ZOUHAIR", "dob": "29/05/2009", "id": "R158006176" },
+                { "name": "touinssi imane", "dob": "03/05/2009", "id": "R159019593" }
+            ],
+            "tcsf9": [
+                { "name": "Farhoun Yahia", "dob": "16/06/2010", "id": "F160022504" },
+                { "name": "OUAZZIF HAITAM", "dob": "31/05/2010", "id": "F160055317" },
+                { "name": "AKJIJ RANIA", "dob": "08/09/2010", "id": "F160094658" },
+                { "name": "ATIF MALAK", "dob": "27/09/2010", "id": "F160142006" },
+                { "name": "SALKI OMAIMA", "dob": "19/10/2010", "id": "F161001630" },
+                { "name": "KAMAL MARWA", "dob": "26/07/2010", "id": "F162057573" },
+                { "name": "KOMMOUR ABDELKADER", "dob": "15/08/2010", "id": "F163015298" },
+                { "name": "EIHASNAOUY RACHIDA", "dob": "02/07/2010", "id": "F163015311" },
+                { "name": "ERROUI SOULAIMANE", "dob": "01/05/2010", "id": "F163076873" },
+                { "name": "GUICHE HASSAN", "dob": "17/09/2010", "id": "F164059034" },
+                { "name": "Ouiken Zineb", "dob": "01/12/2010", "id": "F164096299" },
+                { "name": "FAKHOUR YASSER", "dob": "22/03/2011", "id": "F165024948" },
+                { "name": "EL AMMARI SAFAA", "dob": "05/07/2010", "id": "F165075913" },
+                { "name": "RHAIMI MONSIF", "dob": "15/06/2010", "id": "F166071401" },
+                { "name": "bengassem othmane", "dob": "24/06/2010", "id": "F167003862" },
+                { "name": "Bouzagrara Intissar", "dob": "19/10/2010", "id": "F167096340" },
+                { "name": "SANFOURI INASS", "dob": "25/03/2011", "id": "F167110636" },
+                { "name": "LASFER ADAM", "dob": "07/09/2010", "id": "F168029775" },
+                { "name": "SBAITI RIHAB", "dob": "29/06/2010", "id": "F168030925" },
+                { "name": "Tahiri Mohamed", "dob": "13/07/2010", "id": "F169003976" },
+                { "name": "EL HASNAOUI KHADIJA", "dob": "11/06/2010", "id": "F169066436" },
+                { "name": "HALFYA YOUNES", "dob": "11/09/2010", "id": "F169076987" },
+                { "name": "BENDERRAZ HAMZA", "dob": "05/08/2009", "id": "G158063904" },
+                { "name": "OUALKOUCHE MARWANE", "dob": "29/10/2010", "id": "G166037982" },
+                { "name": "EL HACHIMI HANAN", "dob": "25/04/2010", "id": "G168100882" },
+                { "name": "JEBBAR RAYANE", "dob": "07/10/2006", "id": "R132282464" },
+                { "name": "ESSOUTI MAROUANE", "dob": "29/06/2008", "id": "R142161239" },
+                { "name": "EL KHOUKH SARA", "dob": "21/05/2008", "id": "R147137093" },
+                { "name": "KHADDAR ADAM", "dob": "14/12/2008", "id": "R147197697" },
+                { "name": "Errami Youssef", "dob": "04/06/2008", "id": "R149181205" },
+                { "name": "HATTA ABDELKRIM", "dob": "27/11/2009", "id": "R150003244" },
+                { "name": "EL ABBAR MAROUA", "dob": "12/10/2009", "id": "R151058811" },
+                { "name": "GNAOUI MERIEM", "dob": "29/09/2009", "id": "R153043445" },
+                { "name": "RAFIKI MOUAD", "dob": "03/04/2009", "id": "R156021199" },
+                { "name": "RAFIK BOCHRA", "dob": "14/07/2009", "id": "R157021190" },
+                { "name": "MAHBOUB DOUNIA", "dob": "31/01/2010", "id": "R158077608" }
+            ],
+            "tcsf10": [
+                { "name": "RAHMANE MALAK", "dob": "03/09/2010", "id": "C161055675" },
+                { "name": "SLIMANI MOUAD", "dob": "04/10/2009", "id": "D150071516" },
+                { "name": "bahana wissal", "dob": "09/07/2010", "id": "E167006409" },
+                { "name": "ELMAHFOUDI MOHAMED", "dob": "11/03/2010", "id": "E168050110" },
+                { "name": "MOUDKIR HAJAR", "dob": "29/07/2008", "id": "F146107358" },
+                { "name": "EL KLIHALE ADAM", "dob": "13/05/2010", "id": "F160041855" },
+                { "name": "KARIM HIND", "dob": "14/04/2010", "id": "F161017605" },
+                { "name": "ESSAIDY ASMA", "dob": "25/10/2010", "id": "F163005005" },
+                { "name": "DAFIR MOUHAMED", "dob": "17/01/2010", "id": "F163015299" },
+                { "name": "ERRAMMANI OUMAIMA", "dob": "21/06/2010", "id": "F163015316" },
+                { "name": "ELHADDAD HIBA", "dob": "23/04/2010", "id": "F163015320" },
+                { "name": "ZAIM MOHAMED", "dob": "13/12/2010", "id": "F163066616" },
+                { "name": "AKIL JANNAT", "dob": "30/11/2010", "id": "F163077602" },
+                { "name": "EL Ahmadi Widad", "dob": "09/11/2010", "id": "F163096354" },
+                { "name": "ELKHAZRI KHADIJA", "dob": "12/04/2010", "id": "F164071399" },
+                { "name": "MINI CHAIMAA", "dob": "05/08/2010", "id": "F165005015" },
+                { "name": "ELKANNOURI AMAL", "dob": "04/03/2011", "id": "F165103168" },
+                { "name": "ELHANSALY SALMA", "dob": "14/12/2010", "id": "F166015259" },
+                { "name": "ECHOUCHE YAHYA", "dob": "31/10/2010", "id": "F166034708" },
+                { "name": "BOUMAAZ FATMIAZAHRA", "dob": "13/01/2011", "id": "F167100417" },
+                { "name": "AMALAHOUCH MAROUANE", "dob": "18/10/2010", "id": "F168030803" },
+                { "name": "SOFYANE Hajar", "dob": "21/12/2010", "id": "F168128865" },
+                { "name": "JABIR SEIF EDDINE", "dob": "16/10/2006", "id": "R131473305" },
+                { "name": "BADRAOUI ABDEL GHANI", "dob": "12/07/2007", "id": "R135732187" },
+                { "name": "KHALIL MOHAMEDAMINE", "dob": "14/01/2009", "id": "R145179454" },
+                { "name": "EL QADIRY SAAD", "dob": "28/12/2007", "id": "R147192268" },
+                { "name": "AIT FILALI  AYA", "dob": "16/06/2008", "id": "R150075179" },
+                { "name": "BADRANE RAYANE", "dob": "10/02/2009", "id": "R150076958" },
+                { "name": "MAROUANE BAYAICH", "dob": "12/08/2009", "id": "R151032632" },
+                { "name": "TRAICHAT MOHAMED RABII", "dob": "10/09/2009", "id": "R151036205" },
+                { "name": "KARIM RAYANE", "dob": "22/01/2010", "id": "R153025654" },
+                { "name": "HAJAR ELHARCHI", "dob": "12/09/2009", "id": "R153033143" },
+                { "name": "SMIHI ZAHRA", "dob": "10/10/2009", "id": "R154065102" },
+                { "name": "AMHA MOAD", "dob": "06/01/2010",
+                "id": "R155039901" },
+                { "name": "OUMOUID ZINEB", "dob": "17/07/2009", "id": "R156056245" },
+                { "name": "BOULADRAF DOUAA", "dob": "09/09/2009", "id": "R157068242" },
+                { "name": "FATIMA_EZZAHRAA ELBACHIRI", "dob": "11/01/2010", "id": "R159031634" }
+            ]
+        };
+
+        // --- STATE MANAGEMENT ---
+        let storedResults = JSON.parse(localStorage.getItem('studentResults_v2')) || {}; 
+        // Structure: { studentId: score } - using ID as key since it's unique across classes.
+
+        // --- DOM ELEMENTS ---
+        const tableBody = document.getElementById('tableBody');
+        const searchInput = document.getElementById('searchInput');
+        const classSelect = document.getElementById('classSelect');
+        const studentCount = document.getElementById('studentCount');
+        const emptyState = document.getElementById('emptyState');
+        const lastSavedTime = document.getElementById('lastSavedTime');
+        const toast = document.getElementById('toast-success');
+
+        // --- FUNCTIONS ---
+
+        function init() {
+            renderTable();
+            updateLastSavedTime();
+        }
+
+        function getCurrentClassData() {
+            const selectedClass = classSelect.value;
+            return SCHOOL_DATA[selectedClass] || [];
+        }
+
+        function handleClassChange() {
+            renderTable();
+        }
+
+        function renderTable() {
+            const students = getCurrentClassData();
+            const searchTerm = searchInput.value.toLowerCase();
+            
+            // Filter
+            const filteredStudents = students.filter(student => 
+                student.name.toLowerCase().includes(searchTerm) || 
+                student.id.toLowerCase().includes(searchTerm)
+            );
+
+            // Update stats
+            studentCount.textContent = filteredStudents.length;
+
+            // Clear table
+            tableBody.innerHTML = '';
+
+            // Handle empty state
+            if (filteredStudents.length === 0) {
+                emptyState.classList.remove('hidden');
+                emptyState.classList.add('flex');
+            } else {
+                emptyState.classList.add('hidden');
+                emptyState.classList.remove('flex');
+            }
+
+            // Render Rows
+            filteredStudents.forEach(student => {
+                const score = storedResults[student.id] || '';
+                
+                // Color indicator logic
+                let indicatorColor = 'bg-gray-200';
+                if (score !== '') {
+                    indicatorColor = parseFloat(score) >= 10 ? 'bg-green-500' : 'bg-red-500';
+                }
+
+                const tr = document.createElement('tr');
+                tr.className = 'bg-white border-b hover:bg-gray-50 transition-colors';
+                
+                tr.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded border border-gray-200">
+                            ${student.id}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-gray-600">
+                        ${student.dob}
+                    </td>
+                    <td class="px-6 py-4 font-medium text-gray-900 capitalize">
+                        ${student.name.toLowerCase()}
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="relative">
+                            <input type="number" 
+                                   value="${score}" 
+                                   id="input-${student.id}"
+                                   min="0" max="20" step="0.01"
+                                   placeholder="0.00"
+                                   onblur="saveResult('${student.id}', this.value)"
+                                   oninput="updateIndicator(this, '${student.id}')"
+                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 transition-all">
+                            <div id="indicator-${student.id}" class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                <span class="h-2.5 w-2.5 rounded-full ${indicatorColor}"></span>
+                            </div>
+                        </div>
+                    </td>
+                `;
+                tableBody.appendChild(tr);
+            });
+        }
+
+        function updateIndicator(input, id) {
+            const indicator = document.getElementById(`indicator-${id}`).querySelector('span');
+            const val = parseFloat(input.value);
+            
+            if (input.value === '') {
+                indicator.className = 'h-2.5 w-2.5 rounded-full bg-gray-200';
+            } else if (val >= 10) {
+                indicator.className = 'h-2.5 w-2.5 rounded-full bg-green-500';
+            } else {
+                indicator.className = 'h-2.5 w-2.5 rounded-full bg-red-500';
+            }
+        }
+
+        function saveResult(studentId, value) {
+            // Update state
+            if (value === '') {
+                delete storedResults[studentId];
+            } else {
+                storedResults[studentId] = value;
+            }
+            
+            // Save to local storage
+            localStorage.setItem('studentResults_v2', JSON.stringify(storedResults));
+            
+            // UI Feedback
+            updateLastSavedTime();
+            showToast();
+        }
+
+        function updateLastSavedTime() {
+            const now = new Date();
+            lastSavedTime.textContent = `Last saved: ${now.toLocaleTimeString()}`;
+        }
+
+        function showToast() {
+            toast.classList.remove('opacity-0');
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+            }, 2000);
+        }
+
+        function exportAllData() {
+            // Construct a complete export object containing all classes and their results
+            const exportData = {};
+            
+            Object.keys(SCHOOL_DATA).forEach(className => {
+                exportData[className] = SCHOOL_DATA[className].map(student => ({
+                    ...student,
+                    result: storedResults[student.id] || null // Add result to student object
+                }));
+            });
+
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const blob = new Blob([dataStr], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = `all_students_results_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Initialize App
+        init();
+
+    </script>
+</body>
+</html>
