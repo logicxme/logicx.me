@@ -33,73 +33,135 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #94a3b8; 
         }
+
+        /* Mobile Responsive Table (Card View) */
+        @media (max-width: 768px) {
+            .mobile-card-table thead {
+                display: none;
+            }
+            .mobile-card-table tbody {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .mobile-card-table tr {
+                display: flex;
+                flex-direction: column;
+                background-color: white;
+                border: 1px solid #e5e7eb;
+                border-radius: 0.75rem; /* rounded-xl */
+                box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+                padding: 0.5rem 0;
+            }
+            .mobile-card-table td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.75rem 1.25rem;
+                border-bottom: 1px solid #f3f4f6;
+                text-align: right;
+            }
+            .mobile-card-table td:last-child {
+                border-bottom: none;
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+                background-color: #f9fafb; /* slightly highlight the input area */
+                margin-top: 0.25rem;
+            }
+            /* Label for mobile view */
+            .mobile-card-table td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: #6b7280; /* gray-500 */
+                font-size: 0.875rem;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                text-align: left;
+                margin-right: 1rem;
+            }
+            /* Adjust input width on mobile */
+            .mobile-card-table input {
+                min-width: 120px;
+                text-align: right;
+                font-size: 16px; /* Prevents iOS zoom */
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900 font-sans antialiased">
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-8">
         
         <!-- Header Section -->
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
             <div>
-                <h1 class="text-3xl font-bold text-gray-900 flex items-center gap-3">
+                <h1 class="text-2xl md:text-3xl font-bold text-gray-900 flex items-center gap-3">
                     <span class="bg-blue-100 text-blue-600 p-2 rounded-lg">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path></svg>
+                        <svg class="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path></svg>
                     </span>
-                    Student Results Manager
+                    Student Results
                 </h1>
-                <p class="mt-1 text-gray-500 text-sm">Manage results across multiple classes</p>
+                <p class="mt-1 text-gray-500 text-sm hidden md:block">Manage results across multiple classes</p>
             </div>
             
             <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-                <button onclick="exportAllData()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 flex items-center justify-center gap-2 transition-transform active:scale-95 shadow-lg shadow-blue-500/30">
+                <button onclick="exportAllData()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 flex items-center justify-center gap-2 transition-transform active:scale-95 shadow-lg shadow-blue-500/30 w-full md:w-auto">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                    Export All Classes
+                    Export All
                 </button>
             </div>
         </div>
 
-        <!-- Controls Section -->
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-6">
-            
-            <!-- Class Selector -->
-            <div class="md:col-span-3">
-                <label for="classSelect" class="block mb-2 text-sm font-medium text-gray-900">Select Class</label>
-                <select id="classSelect" onchange="handleClassChange()" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 shadow-sm">
-                    <option value="1bacsef5">1BAC SEF 5</option>
-                    <option value="tcsf9">TCSF 9</option>
-                    <option value="tcsf10">TCSF 10</option>
-                </select>
-            </div>
+        <!-- Sticky Controls Wrapper -->
+        <div class="sticky top-0 z-30 bg-gray-50/95 backdrop-blur-sm pt-2 pb-4 -mx-4 px-4 md:static md:bg-transparent md:p-0 md:mx-0">
+            <!-- Controls Section -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4">
+                
+                <!-- Class Selector -->
+                <div class="md:col-span-3">
+                    <label for="classSelect" class="block mb-1 md:mb-2 text-xs md:text-sm font-medium text-gray-900">Class</label>
+                    <select id="classSelect" onchange="handleClassChange()" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 shadow-sm">
+                        <option value="1bacsef5">1BAC SEF 5</option>
+                        <option value="tcsf9">TCSF 9</option>
+                        <option value="tcsf10">TCSF 10</option>
+                    </select>
+                </div>
 
-            <!-- Search Bar -->
-            <div class="md:col-span-6">
-                <label for="searchInput" class="block mb-2 text-sm font-medium text-gray-900">Search Students</label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                        <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                        </svg>
+                <!-- Search Bar -->
+                <div class="md:col-span-6">
+                    <label for="searchInput" class="block mb-1 md:mb-2 text-xs md:text-sm font-medium text-gray-900">Search</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                            </svg>
+                        </div>
+                        <input type="text" id="searchInput" onkeyup="renderTable()" class="block w-full p-2.5 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 shadow-sm" placeholder="Student name or ID" required>
                     </div>
-                    <input type="text" id="searchInput" onkeyup="renderTable()" class="block w-full p-2.5 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 shadow-sm" placeholder="Search by name or ID..." required>
+                </div>
+
+                <!-- Stats -->
+                <div class="md:col-span-3 hidden md:block">
+                     <label class="block mb-2 text-sm font-medium text-gray-900">Class Size</label>
+                    <div class="flex items-center justify-between p-2.5 bg-white border border-gray-300 rounded-lg shadow-sm">
+                        <span class="text-sm text-gray-500 flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                            Students
+                        </span>
+                        <span id="studentCount" class="text-lg font-bold text-gray-900">0</span>
+                    </div>
                 </div>
             </div>
-
-            <!-- Stats -->
-            <div class="md:col-span-3">
-                 <label class="block mb-2 text-sm font-medium text-gray-900">Class Size</label>
-                <div class="flex items-center justify-between p-2.5 bg-white border border-gray-300 rounded-lg shadow-sm">
-                    <span class="text-sm text-gray-500 flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                        Students
-                    </span>
-                    <span id="studentCount" class="text-lg font-bold text-gray-900">0</span>
-                </div>
+            
+            <!-- Mobile Stats Bar -->
+            <div class="flex md:hidden justify-between items-center text-xs text-gray-500 mt-2 px-1">
+                <span id="mobileStudentCount">0 Students</span>
+                <span id="lastSavedTimeMobile">Saved: Never</span>
             </div>
         </div>
 
         <!-- Notification Toast -->
-        <div id="toast-success" class="fixed bottom-5 right-5 flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 transition-opacity duration-300 opacity-0" role="alert">
+        <div id="toast-success" class="fixed top-5 left-1/2 transform -translate-x-1/2 z-50 flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow-xl border border-gray-100 dark:text-gray-400 dark:bg-gray-800 transition-all duration-300 opacity-0 translate-y-[-20px]" role="alert">
             <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
                 <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
@@ -110,9 +172,9 @@
         </div>
 
         <!-- Table -->
-        <div class="relative overflow-hidden bg-white shadow-md sm:rounded-lg border border-gray-200">
-            <div class="overflow-x-auto">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+        <div class="relative md:bg-white md:shadow-md md:rounded-lg md:border md:border-gray-200">
+            <div class="md:overflow-x-auto">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 mobile-card-table">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 border-b">
                         <tr>
                             <th scope="col" class="px-6 py-4 font-bold text-gray-900">Student ID</th>
@@ -127,13 +189,13 @@
                 </table>
             </div>
             <!-- Empty State -->
-            <div id="emptyState" class="hidden flex-col items-center justify-center py-12 text-center">
+            <div id="emptyState" class="hidden flex-col items-center justify-center py-12 text-center bg-white rounded-xl border border-dashed border-gray-300 mt-4 md:mt-0">
                 <svg class="w-16 h-16 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <p class="text-gray-500 text-lg">No students found matching your search.</p>
+                <p class="text-gray-500 text-lg">No students found.</p>
             </div>
         </div>
         
-        <div class="mt-4 text-xs text-gray-400 text-right flex justify-between">
+        <div class="mt-4 text-xs text-gray-400 text-right hidden md:flex justify-between">
             <span>* Data is stored locally on your device</span>
             <span id="lastSavedTime">Last saved: Never</span>
         </div>
@@ -276,8 +338,10 @@
         const searchInput = document.getElementById('searchInput');
         const classSelect = document.getElementById('classSelect');
         const studentCount = document.getElementById('studentCount');
+        const mobileStudentCount = document.getElementById('mobileStudentCount');
         const emptyState = document.getElementById('emptyState');
         const lastSavedTime = document.getElementById('lastSavedTime');
+        const lastSavedTimeMobile = document.getElementById('lastSavedTimeMobile');
         const toast = document.getElementById('toast-success');
 
         // --- FUNCTIONS ---
@@ -308,6 +372,7 @@
 
             // Update stats
             studentCount.textContent = filteredStudents.length;
+            mobileStudentCount.textContent = `${filteredStudents.length} Students`;
 
             // Clear table
             tableBody.innerHTML = '';
@@ -325,28 +390,23 @@
             filteredStudents.forEach(student => {
                 const score = storedResults[student.id] || '';
                 
-                // Color indicator logic
-                let indicatorColor = 'bg-gray-200';
-                if (score !== '') {
-                    indicatorColor = parseFloat(score) >= 10 ? 'bg-green-500' : 'bg-red-500';
-                }
-
                 const tr = document.createElement('tr');
-                tr.className = 'bg-white border-b hover:bg-gray-50 transition-colors';
+                // Added id for easier debugging if needed, though not strictly required
+                tr.className = 'bg-white border-b hover:bg-gray-50 transition-colors md:table-row';
                 
                 tr.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded border border-gray-200">
+                    <td class="px-6 py-4 whitespace-nowrap" data-label="Student ID">
+                        <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded border border-gray-200">
                             ${student.id}
                         </span>
                     </td>
-                    <td class="px-6 py-4 text-gray-600">
+                    <td class="px-6 py-4 text-gray-600" data-label="DOB">
                         ${student.dob}
                     </td>
-                    <td class="px-6 py-4 font-medium text-gray-900 capitalize">
+                    <td class="px-6 py-4 font-medium text-gray-900 capitalize" data-label="Full Name">
                         ${student.name.toLowerCase()}
                     </td>
-                    <td class="px-6 py-4">
+                    <td class="px-6 py-4" data-label="Result (/20)">
                         <div class="relative">
                             <input type="number" 
                                    value="${score}" 
@@ -354,29 +414,12 @@
                                    min="0" max="20" step="0.01"
                                    placeholder="0.00"
                                    onblur="saveResult('${student.id}', this.value)"
-                                   oninput="updateIndicator(this, '${student.id}')"
                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 transition-all">
-                            <div id="indicator-${student.id}" class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                                <span class="h-2.5 w-2.5 rounded-full ${indicatorColor}"></span>
-                            </div>
                         </div>
                     </td>
                 `;
                 tableBody.appendChild(tr);
             });
-        }
-
-        function updateIndicator(input, id) {
-            const indicator = document.getElementById(`indicator-${id}`).querySelector('span');
-            const val = parseFloat(input.value);
-            
-            if (input.value === '') {
-                indicator.className = 'h-2.5 w-2.5 rounded-full bg-gray-200';
-            } else if (val >= 10) {
-                indicator.className = 'h-2.5 w-2.5 rounded-full bg-green-500';
-            } else {
-                indicator.className = 'h-2.5 w-2.5 rounded-full bg-red-500';
-            }
         }
 
         function saveResult(studentId, value) {
@@ -397,13 +440,15 @@
 
         function updateLastSavedTime() {
             const now = new Date();
-            lastSavedTime.textContent = `Last saved: ${now.toLocaleTimeString()}`;
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            lastSavedTime.textContent = `Last saved: ${timeString}`;
+            lastSavedTimeMobile.textContent = `Saved: ${timeString}`;
         }
 
         function showToast() {
-            toast.classList.remove('opacity-0');
+            toast.classList.remove('opacity-0', 'translate-y-[-20px]');
             setTimeout(() => {
-                toast.classList.add('opacity-0');
+                toast.classList.add('opacity-0', 'translate-y-[-20px]');
             }, 2000);
         }
 
