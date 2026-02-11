@@ -3,6 +3,17 @@
         "type": "course",
         "typeLabel": "Cours",
         "className": "1BAC SEF",
+        "title": "Calcul trigonométrique",
+        "date": "11 FÉV 2026",
+        "fileName": "CALC_TRIGO.pdf",
+        "url": "https://raw.githubusercontent.com/logicxme/logicx.me/refs/heads/main/files/CALC_TRIGO.pdf",
+        "fileSize": "1.5 MB",
+        "icon": "fa-file-pdf"
+    },
+    {
+        "type": "course",
+        "typeLabel": "Cours",
+        "className": "1BAC SEF",
         "title": "SUITES NUMÉRIQUES",
         "date": "14 JAN 2026",
         "fileName": "Cours_ LES_SUITES_NUMERIQUES.pdf",
