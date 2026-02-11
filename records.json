@@ -3,6 +3,17 @@
         "type": "course",
         "typeLabel": "Cours",
         "className": "1BAC SEF",
+        "title": "LIMITE D'UNE FONCTION NUMÉRIQUE",
+        "date": "11 FÉV 2026",
+        "fileName": "LIMITE D'UNE FONCTION NUMÉRIQUE",
+        "url": "https://raw.githubusercontent.com/logicxme/logicx.me/refs/heads/main/files/Cours_LIMITES.pdf",
+        "fileSize": "4.1 MB",
+        "icon": "fa-file-pdf"
+    },
+    {
+        "type": "course",
+        "typeLabel": "Cours",
+        "className": "1BAC SEF",
         "title": "Calcul trigonométrique",
         "date": "11 FÉV 2026",
         "fileName": "CALC_TRIGO.pdf",
